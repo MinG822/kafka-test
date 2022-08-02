@@ -1,0 +1,6 @@
+FROM confluentinc/cp-kafka:7.0.1
+
+USER root
+RUN chown -R 501:20 /var/lib/zookeeper /var/log/confluent /var/log/kafka /etc/kafka /var/lib/kafka \
+    && chmod -R 770 /var/lib/zookeeper /var/log/confluent /var/log/kafka /etc/kafka /var/lib/kafka
+USER 501:20

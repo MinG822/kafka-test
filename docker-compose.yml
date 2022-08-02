@@ -1,0 +1,27 @@
+version: '3'
+services:
+  zookeeper:
+    image: zookeeper:latest
+    container_name: zookeeper
+    user: '501:20'
+    volumes:
+      - ./data/zk_data/data:/var/lib/zookeeper/data
+      - ./data/zk_data/log:/var/lib/zookeeper/log
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  broker:
+    image: kafka:latest
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    user: '501:20'
+    volumes:
+      - ./data/kafka_data:/var/lib/kafka/data
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
